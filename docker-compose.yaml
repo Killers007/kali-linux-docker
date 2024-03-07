@@ -1,0 +1,147 @@
+name: kal-linux
+services:
+  kali:
+    container_name: kali-linux
+    build:
+        context: .
+        args:
+          - GUI=${GUI}
+          - METASPLOIT=${METASPLOIT}
+          - BEEF=${BEEF}
+          - SQLMAP=${SQLMAP}
+          - HYDRA=${HYDRA}
+          - NMAP=${NMAP}
+          - WIFITE=${WIFITE}
+          - HASHCAT=${HASHCAT}
+          - SPIDERFOOT=${SPIDERFOOT}
+          - SHERLOCK=${SHERLOCK}
+          - DIRB=${DIRB}
+          - ETTERCAP=${ETTERCAP}
+          - WIRESHARK=${WIRESHARK}
+          - NETCAT=${NETCAT}
+          - YERSINIA=${YERSINIA}
+          - RESPONDER=${RESPONDER}
+          - NIKTO=${NIKTO}
+          - AIRCRACK-NG=${AIRCRACK-NG}
+          - WPSCAN=${WPSCAN}
+          - SNORT=${SNORT}
+          - MIMIKATZ=${MIMIKATZ}
+          - MALTEGO=${MALTEGO}
+          - AUTOPSY=${AUTOPSY}
+          - LEGION=${LEGION}
+          - DIRBUSTER=${DIRBUSTER}
+          - GOBUSTER=${GOBUSTER}
+          - TCPDUMP=${TCPDUMP}
+          - CEWL=${CEWL}
+          - BURPSUITE=${BURPSUITE}
+          - WORDLISTS=${WORDLISTS}
+          - HPING3=${HPING3}
+          - POWERSHELL=${POWERSHELL}
+          - CRUNCH=${CRUNCH}
+          - JOHN=${JOHN}
+          - THEHARVESTER=${THEHARVESTER}
+          - NETDISCOVER=${NETDISCOVER}
+          - BLOODHOUND=${BLOODHOUND}
+          - AIRGEDDON=${AIRGEDDON}
+          - MACCHANGER=${MACCHANGER}
+          - DSNIFF=${DSNIFF}
+          - AMASS=${AMASS}
+          - STEGHIDE=${STEGHIDE}
+          - SCAPY=${SCAPY}
+          - RECON-NG=${RECON-NG}
+          - NUCLEI=${NUCLEI}
+          - LYNIS=${LYNIS}
+          - IMPACKET-SCRIPTS=${IMPACKET-SCRIPTS}
+          - FCRACKZIP=${FCRACKZIP}
+          - CRYPTSETUP=${CRYPTSETUP}
+          - BINWALK=${BINWALK}
+          - ZENMAP-KBX=${ZENMAP-KBX}
+          - WHATWEB=${WHATWEB}
+          - REAVER=${REAVER}
+          - PARSERO=${PARSERO}
+          - EYEWITNESS=${EYEWITNESS}
+          - DIRSEARCH=${DIRSEARCH}
+          - WIFIPHISHER=${WIFIPHISHER}
+          - SUBFINDER=${SUBFINDER}
+          - GOPHISH=${GOPHISH}
+          - FPING=${FPING}
+          - FOREMOST=${FOREMOST}
+          - FIREWALK=${FIREWALK}
+          - CHISEL=${CHISEL}
+          - BETTERCAP=${BETTERCAP}
+          - WAPITI=${WAPITI}
+          - SOCAT=${SOCAT}
+          - KOADIC=${KOADIC}
+          - FFUF=${FFUF}
+          - DNSRECON=${DNSRECON}
+          - CRACKMAPEXEC=${CRACKMAPEXEC}
+          - ARMITAGE=${ARMITAGE}
+          - ABOVE=${ABOVE}
+          - RKHUNTER=${RKHUNTER}
+          - MASSCAN=${MASSCAN}
+          - JSQL=${JSQL}
+          - GOLDENEYE=${GOLDENEYE}
+          - DVWA=${DVWA}
+          - DNSENUM=${DNSENUM}
+          - CHNTPW=${CHNTPW}
+          - ARP-SCAN=${ARP-SCAN}
+          - YARA=${YARA}
+          - VILLAIN=${VILLAIN}
+          - VEIL=${VEIL}
+          - PDF-PARSER=${PDF-PARSER}
+          - PATATOR=${PATATOR}
+          - HTTRACK=${HTTRACK}
+          - HASHID=${HASHID}
+          - HASH-IDENTIFIER=${HASH-IDENTIFIER}
+          - GUYMAGER=${GUYMAGER}
+          - FIERCE=${FIERCE}
+          - DRIFTNET=${DRIFTNET}
+          - DMITRY=${DMITRY}
+          - COMMIX=${COMMIX}
+          - CAPSTONE=${CAPSTONE}
+          - ARPWATCH=${ARPWATCH}
+          - RUFFLEHOG=${RUFFLEHOG}
+          - TIGER=${TIGER}
+          - SUBLIST3R=${SUBLIST3R}
+          - SSLSTRIP=${SSLSTRIP}
+          - SET=${SET}
+          - REDEYE=${REDEYE}
+    stdin_open: true
+    tty: true
+    ports: 
+      - target: 4040
+        published: "4040"
+        protocol: tcp
+      - target: 22 
+        published: "223" # Remote SSH PORT
+        protocol: tcp
+    volumes:
+      - /home/pentest:/home # External Pentest Tools
+    devices: []
+    cap_add: []
+    command: []
+    environment: []
+    networks:
+      - kali_network
+    privileged: false
+    restart: unless-stopped
+    hostname: kali
+    cpu_shares: 90
+    deploy:
+      resources:
+        limits:
+          memory: 1024M
+networks:
+  kali_network:
+    name: kal-linux_kali_network
+    driver: bridge
+x-casaos:
+  hostname: ""
+  scheme: http
+  index: /
+  port_map: ""
+  author: self
+  category: self
+  icon: "https://img.icons8.com/?size=64&id=qBWtR72kluCU&format=png"
+  title:
+    custom: Kali Linux
