@@ -5,7 +5,8 @@ LABEL maintainer="Ahmad Juhdi <ahmadjuhdi007@gmail.com>"
 RUN apt-get update -y && \
       apt-get install -y \
       curl \
-      python3
+      python3 \
+      sudo
 
 ###########################################################################
 # SSH Config
@@ -13,30 +14,20 @@ RUN apt-get update -y && \
 
 ARG SSH=false
 
+# Set default user details
+ARG SSH_USERNAME=juhdi
+ARG SSH_PASSWORD=juhdi
+
 RUN if [ ${SSH} = true ]; then \
     apt-get install -y \
       ssh && \
       service ssh start && \
       update-rc.d -f ssh remove && \
       update-rc.d -f ssh defaults && \
-    
       # Create user and set password (not recommended)
-      useradd --create-home --shell /bin/bash --user-group --groups sudo ${SSH_USERNAME} \ && 
-      echo "${SSH_USERNAME}:${SSH_PASSWORD}" | chpasswd
+      useradd --create-home --shell /bin/bash --user-group --groups sudo ${SSH_USERNAME} && \ 
+      echo "${SSH_USERNAME}:${SSH_PASSWORD}" | chpasswd \
 ;fi
-
-# RUN apt-get install -y \
-#       ssh
-# RUN service ssh start && \
-#       update-rc.d -f ssh remove && \
-#       update-rc.d -f ssh defaults
-
-# Set default user details
-# ARG USERNAME=juhdi
-# ARG PASSWORD=juhdi
-
-# RUN useradd --create-home --shell /bin/bash --user-group --groups sudo ${USERNAME} \
-#     && echo "${USERNAME}:${PASSWORD}" | chpasswd
 
 ###########################################################################
 # DESKTOP ENVIRONMENT
@@ -49,6 +40,24 @@ RUN if [ ${GUI} = true ]; then \
       kali-desktop-gnome \
 ;fi
 
+
+
+ENV USER root
+
+ENV VNCEXPOSE 0
+ENV VNCPORT 5900
+ENV VNCPWD changeme
+ENV VNCDISPLAY 1920x1080
+ENV VNCDEPTH 16
+
+RUN apt-get -y install tightvncserver dbus dbus-x11 novnc net-tools
+
+# Entrypoint
+
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT [ "/entrypoint.sh" ]
+
 ###########################################################################
 # METASPLOIT
 ###########################################################################
@@ -59,7 +68,6 @@ RUN if [ ${METASPLOIT} = true ]; then \
     # curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb > msfinstall && \
     # chmod 755 msfinstall && \
     # ./msfinstall \
-
     apt-get install -y \
       metasploit-framework \
 ;fi
@@ -565,4 +573,4 @@ RUN if [ ${RECON-NG} = true ]; then \
 EXPOSE 22 80 81 443 4444 4040 6501 8080 4443
 
 # Startup SSH service when container starts
-CMD ["/usr/sbin/sshd", "-D"]
+# CMD ["/usr/sbin/sshd", "-D"]

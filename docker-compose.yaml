@@ -6,6 +6,16 @@ services:
         context: .
         args:
           - GUI=${GUI}
+          - USER=${USER}
+          - VNCEXPOSE=${VNCEXPOSE}
+          - VNCPORT=${VNCPORT}
+          - VNCPWD=${VNCPWD}
+          - VNCDISPLAY=${VNCDISPLAY}
+          - VNCDEPTH=${VNCDEPTH}
+          - SSH=${SSH}
+          - SSH_USERNAME=${SSH_USERNAME}
+          - SSH_PASSWORD=${SSH_PASSWORD}
+          
           - METASPLOIT=${METASPLOIT}
           - BEEF=${BEEF}
           - SQLMAP=${SQLMAP}
@@ -111,6 +121,9 @@ services:
     ports: 
       - target: 4040
         published: "4040"
+        protocol: tcp
+      - target: 5900
+        published: "5900"
         protocol: tcp
       - target: 22 
         published: "223" # Remote SSH PORT
