@@ -13,8 +13,6 @@ services:
           - VNCDISPLAY=${VNCDISPLAY}
           - VNCDEPTH=${VNCDEPTH}
           - SSH=${SSH}
-          - SSH_USERNAME=${SSH_USERNAME}
-          - SSH_PASSWORD=${SSH_PASSWORD}
           
           - METASPLOIT=${METASPLOIT}
           - BEEF=${BEEF}
@@ -149,10 +147,10 @@ networks:
     name: kal-linux_kali_network
     driver: bridge
 x-casaos:
-  hostname: ""
+  hostname: "juhdi.lan"
   scheme: http
-  index: /
-  port_map: ""
+  index: /?hostname=juhdi.lan&username=root&password=cm9vdA==&port=223
+  port_map: "8822"
   author: self
   category: self
   icon: "https://img.icons8.com/?size=64&id=qBWtR72kluCU&format=png"

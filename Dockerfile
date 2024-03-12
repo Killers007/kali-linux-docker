@@ -5,6 +5,7 @@ LABEL maintainer="Ahmad Juhdi <ahmadjuhdi007@gmail.com>"
 RUN apt-get update -y && \
       apt-get install -y \
       curl \
+      git \
       python3 \
       sudo
 
@@ -15,8 +16,11 @@ RUN apt-get update -y && \
 ARG SSH=false
 
 # Set default user details
-ARG SSH_USERNAME=juhdi
-ARG SSH_PASSWORD=juhdi
+ARG SSH_USERNAME=root
+ARG SSH_PASSWORD=root
+
+# Change Password Root
+RUN echo "${SSH_USERNAME}:${SSH_PASSWORD}" | chpasswd
 
 RUN if [ ${SSH} = true ]; then \
     apt-get install -y \
@@ -24,10 +28,10 @@ RUN if [ ${SSH} = true ]; then \
       service ssh start && \
       update-rc.d -f ssh remove && \
       update-rc.d -f ssh defaults && \
-      # Create user and set password (not recommended)
-      useradd --create-home --shell /bin/bash --user-group --groups sudo ${SSH_USERNAME} && \ 
-      echo "${SSH_USERNAME}:${SSH_PASSWORD}" | chpasswd \
+      # Enabled SSH Root
+      sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
 ;fi
+
 
 ###########################################################################
 # DESKTOP ENVIRONMENT
@@ -38,22 +42,21 @@ ARG GUI=false
 RUN if [ ${GUI} = true ]; then \
     apt-get install -y \
       kali-desktop-gnome \
+      tightvncserver \
+      dbus \
+      dbus-x11 \
+      novnc \
+      net-tools \
 ;fi
 
-
-
 ENV USER root
-
 ENV VNCEXPOSE 0
 ENV VNCPORT 5900
 ENV VNCPWD changeme
 ENV VNCDISPLAY 1920x1080
 ENV VNCDEPTH 16
 
-RUN apt-get -y install tightvncserver dbus dbus-x11 novnc net-tools
-
 # Entrypoint
-
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT [ "/entrypoint.sh" ]
